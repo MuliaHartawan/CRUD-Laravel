@@ -14,12 +14,12 @@ class CreateJawabansTable extends Migration
     public function up()
     {
         Schema::create('jawabans', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('isi',255);
-            $table->integer('pertanyaan_id')->unique();
+            $table->id();
+            $table->text('isi_jawaban');
+            $table->unsignedBigInteger('pertanyaan_id');
             $table->timestamps();
 
-           $table->foreign('pertanyaan_id')->references('id')->on('pertanyaans');
+            $table->foreign('pertanyaan_id')->references('id')->on('pertanyaans');
         });
     }
 

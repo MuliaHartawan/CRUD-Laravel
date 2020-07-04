@@ -14,9 +14,9 @@ class CreatePertanyaansTable extends Migration
     public function up()
     {
         Schema::create('pertanyaans', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('judul', 45);
-            $table->string('isi',255);
+            $table->id();
+            $table->string('judul');
+            $table->text('isi_pertanyaan');
             $table->timestamps();
         });
     }
