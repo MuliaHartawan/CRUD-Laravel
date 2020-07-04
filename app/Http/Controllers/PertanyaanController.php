@@ -63,15 +63,17 @@ class PertanyaanController extends Controller
         //rules validasi inputan user
         Validator::make($request->all(), [
             'judul' => 'required',
-            'isi' => 'required'
+            'isi_pertanyaan' => 'required'
         ], $messages)->validate();
 
         //jika lolos verifikasi insert ke database
         $pertanyaan = Pertanyaan::create($request->all());
-        if ($pertanyaan) {
-            return redirect('/pertanyaan')->with('succes', 'Jawaban Berhasil Ditambahkan');
-        }
-        return redirect('/pertanyaan')->width('error', 'Jawaban Gagal Ditambahkan');
+
+        dd($pertanyaan);
+        // if ($pertanyaan) {
+        //     return redirect('/pertanyaan')->with('succes', 'Jawaban Berhasil Ditambahkan');
+        // }
+        // return redirect('/pertanyaan')->width('error', 'Jawaban Gagal Ditambahkan');
         
         
     }
