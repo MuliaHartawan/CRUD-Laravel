@@ -32,8 +32,7 @@ class PertanyaanController extends Controller
     public function create()
     {
         //
-
-        return view ('pertanyaan.create');
+        return view ('pertanyaan.create', ['title' => 'Tambah Pertanyaan']);
         
     }
 
@@ -63,17 +62,16 @@ class PertanyaanController extends Controller
         //rules validasi inputan user
         Validator::make($request->all(), [
             'judul' => 'required',
-            'isi_pertanyaan' => 'required'
+            'isi' => 'required'
         ], $messages)->validate();
 
         //jika lolos verifikasi insert ke database
         $pertanyaan = Pertanyaan::create($request->all());
 
-        dd($pertanyaan);
-        // if ($pertanyaan) {
-        //     return redirect('/pertanyaan')->with('succes', 'Jawaban Berhasil Ditambahkan');
-        // }
-        // return redirect('/pertanyaan')->width('error', 'Jawaban Gagal Ditambahkan');
+        if ($pertanyaan) {
+            return redirect('/pertanyaan')->with('succes', 'Jawaban Berhasil Ditambahkan');
+        }
+        return redirect('/pertanyaan')->width('error', 'Jawaban Gagal Ditambahkan');
         
         
     }
@@ -87,6 +85,14 @@ class PertanyaanController extends Controller
     public function show($id)
     {
         //
+        $pertanyaan = Pertanyaan::findOrFail($request->id);
+        // dd($pertanyaan);
+        $jawaban = Jawaban::where('pertanyaan_id', $request->id)->get();
+        return view('pertanyaan.detail', [
+            'pertanyaan'    =>$pertanyaan,
+            'jawaban'       => $jawaban,
+            'title' => "Lihat Pertanyaan"
+        ]);
     }
 
     /**
@@ -112,9 +118,26 @@ class PertanyaanController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $pertanyaan = Pertanyaan::find($id);
-        $pertanyaan->update($request->all());
-        return view ('/pertanyaan')->swith('sukses', 'Data Telah Diubah');
+        $messages = [
+            'required' => 'Kolom Tidak boleh Kosong'            
+        ];
+
+        //rules validasi inputan user
+        Validator::make($request->all(), [
+            'judul' => 'required',
+            'isi' => 'required'
+        ], $messages)->validate();
+
+        // jika lolos verifikasi insert ke database
+        $pertanyaan = Pertanyaan::where('id', $request->id)->update([
+            'judul'             => $request->judul,
+            'isi_pertanyaan'    => $request->isi,
+        ]);
+
+        if($pertanyaan){
+            return redirect('/pertanyaan')->with('success', 'Pertanyaan berhasil diupdate');
+        }
+        return redirect('/pertanyaan')->with('error', 'Pertanyaan gagal diupdate');
     }
 
     /**
@@ -128,7 +151,11 @@ class PertanyaanController extends Controller
         //
         $pertanyaan = Pertanyaan::find($id);
         $pertanyaan->delete();
-
-        return redirect('/pertanyaan')->with('sukses', 'Data Berhasil Di Hapus');
+        
+        if($hasil){
+            return redirect('/pertanyaan')->with('success', 'Pertanyaan berhasil dihapus');
+        }
+        return redirect('/pertanyaan')->with('error', 'Pertanyaan gagal dihapus');
+    
     }
 }

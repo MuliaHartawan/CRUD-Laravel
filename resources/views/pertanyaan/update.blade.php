@@ -17,18 +17,19 @@
                 <h6 class="m-0 font-weight-bold text-primary">Tambah Pertanyaan</h6>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="{{url('/pertanyaan')}}">
+                    <form method="post" action="{{url('/pertanyaan'.$pertanyaan->id)}}">
                     @csrf
+                    @method('put')
                         <div class="form-group">
                             <label for="judulPertanyaa">Judul Pertanyaan</label>
-                            <input type="text" class="form-control @error('judul') is-invalid @enderror" id="judul" name="judul" value="{{old('judul')}}" placeholder="Masukkan Judul Pertanyaan">
+                            <input type="text" class="form-control @error('judul') is-invalid @enderror" id="judul" name="judul" value="{{$pertanyaan->judul}}" placeholder="Masukkan Judul Pertanyaan">
                             @error('judul')
                             <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="form-group">
                             <label for="isiPertanyaan">Isi Pertanyaan</label>
-                            <input type="text" class="form-control @error('isi') is-invalid @enderror" id="isi" name="isi" value="{{old('isi')}}" placeholder="Masukkan Isi Pertanyaan"> 
+                            <input type="text" class="form-control @error('isi') is-invalid @enderror" id="isi" name="isi" value="{{$pertanyaan->isi_pertanyaan}}" placeholder="Masukkan Isi Pertanyaan"> 
                             @error('isi')
                             <div class="text-danger">{{ $message }}</div>
                             @enderror
